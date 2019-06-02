@@ -12,130 +12,198 @@ typedef struct element{
 typedef struct{
     element *object;
     int lenght;
-}list;
+}array;
 
-/*New_list() inicializa uma nova lista*/
-list* new_list(void){
-    list *ls = (list *) malloc(sizeof(list));
+void clear(void){
+    system("cls");
+}
 
-    if(ls == NULL){
+/*New_array() inicializa uma nova array*/
+array* new_array(void){
+    array *arr = (array *) malloc(sizeof(array));
+
+    if(arr == NULL){
         printf("Memória Cheia");
         return NULL;
     }else{
         /*Definindo o valor padrão de criação*/
-        ls->lenght = 0;
-        return ls;
+        arr->lenght = 0;
+        return arr;
     }
 }
 
-/*Get_space()  os valore no fim da lista*/
-int get_space(list *ls){
-    if(ls->lenght == 0){
-        ls->object = (element*) malloc(2 *sizeof(element)); //Malloc usado para criar o 1° elemento da lista e o Cabeçalho
-        ls->lenght += 1;
+/*Get_space()  os valore no fim da array*/
+int get_space(array *arr){
+    if(arr->lenght == 0){
+        arr->object = (element*) malloc(2 *sizeof(element)); //Malloc usado para criar o 1° elemento da array e o Cabeçalho
+        arr->lenght += 1;
     }else{
-        ls->object = (element*) realloc(ls->object, (ls->lenght + 1) * sizeof(element) ); //Realloc usado para aumentar o tamanho da lista
+        arr->object = (element*) realloc(arr->object, (arr->lenght + 1) * sizeof(element) ); //Realloc usado para aumentar o tamanho da array
     }
 
-    if(ls->object == NULL){
+    if(arr->object == NULL){
         printf("Memória cheia");
-        free(ls->object);
+        free(arr->object);
         return 0;
     }else{
         return 1;
     }
 }
-/*Push() insere os valore no fim da lista*/
-void push(list *ls,int value){
-    if( get_space(ls) ){
-        if(ls->lenght == 1){
-            ls->object[0].back = &ls->object[1]; //Definindo endereço do objeto anterior no cabeçalho
-            ls->object[0].next = &ls->object[1]; //Definindo endereço do objeto seguinte no cabeçalho
+/*Push() insere os valore no fim da array*/
+void push(array *arr,int value){
+    if( get_space(arr) ){
+        if(arr->lenght == 1){
+            arr->object[0].back = &arr->object[1]; //Definindo endereço do objeto anterior no cabeçalho
+            arr->object[0].next = &arr->object[1]; //Definindo endereço do objeto seguinte no cabeçalho
             
-            ls->object[1].value = value; //Definindo valor do 1° Item
-            ls->object[1].next = &ls->object[0]; //Definindo endereço do objeto seguinte
-            ls->object[1].back = &ls->object[0]; //Definindo endereço do objeto anterior
+            arr->object[1].value = value; //Definindo valor do 1° Item
+            arr->object[1].next = &arr->object[0]; //Definindo endereço do objeto seguinte
+            arr->object[1].back = &arr->object[0]; //Definindo endereço do objeto anterior
         }else{
             /*Colocando os endereços do próximo e do anterior no objeto criado*/
-            ls->object[ ls->lenght ].next = &ls->object[0];
-            ls->object[ ls->lenght ].back = ls->object[0].back;
+            arr->object[ arr->lenght ].next = &arr->object[0];
+            arr->object[ arr->lenght ].back = arr->object[0].back;
 
-            ls->object[ ls->lenght ].value = value;//Colocando o valor do parâmetro no elemento
+            arr->object[ arr->lenght ].value = value; //Colocando o valor do parâmetro no elemento
 
             /*Atualizando o endereço do novo objeto nos elementos: Anterior e Próximo*/
-            ls->object[0].back->next = &ls->object[ ls->lenght ];
-            ls->object[0].back = &ls->object[ ls->lenght ];
+            arr->object[0].back->next = &arr->object[ arr->lenght ];
+            arr->object[0].back = &arr->object[ arr->lenght ];
         }
-        ls->lenght++; //Incrementa + 1 no tamanho do lista
+        arr->lenght++; //Incrementa + 1 no tamanho do array
     }
 }
 
-/*Unshift() insere os valore no inicio da lista*/
-void unshift(list *ls,int value){
-    if( get_space(ls) ){
-        if(ls->lenght == 1){
-            ls->object[0].back = &ls->object[1]; //Definindo endereço do objeto anterior no cabeçalho
-            ls->object[0].next = &ls->object[1]; //Definindo endereço do objeto seguinte no cabeçalho
+/*Unshift() insere os valore no inicio da array*/
+void unshift(array *arr,int value){
+    if( get_space(arr) ){
+        if(arr->lenght == 1){
+            arr->object[0].back = &arr->object[1]; //Definindo endereço do objeto anterior no cabeçalho
+            arr->object[0].next = &arr->object[1]; //Definindo endereço do objeto seguinte no cabeçalho
             
-            ls->object[1].value = value; //Definindo valor do 1° Item
-            ls->object[1].next = &ls->object[0]; //Definindo endereço do objeto seguinte
-            ls->object[1].back = &ls->object[0]; //Definindo endereço do objeto anterior
+            arr->object[1].value = value; //Definindo valor do 1° Item
+            arr->object[1].next = &arr->object[0]; //Definindo endereço do objeto seguinte
+            arr->object[1].back = &arr->object[0]; //Definindo endereço do objeto anterior
         }else{
             /*Colocando os endereços do próximo e do anterior no objeto criado*/
-            ls->object[ ls->lenght ].next = ls->object[0].next;
-            ls->object[ ls->lenght ].back = &ls->object[0];
+            arr->object[ arr->lenght ].next = arr->object[0].next;
+            arr->object[ arr->lenght ].back = &arr->object[0];
 
-            ls->object[ ls->lenght ].value = value; //Colocando o valor do parâmetro no elemento
+            arr->object[ arr->lenght ].value = value; //Colocando o valor do parâmetro no elemento
 
             /*Atualizando o endereço do novo objeto nos elementos: Anterior e Próximo*/
-            ls->object[0].next->back = &ls->object[ ls->lenght ];
-            ls->object[0].next = &ls->object[ ls->lenght ];
+            arr->object[0].next->back = &arr->object[ arr->lenght ];
+            arr->object[0].next = &arr->object[ arr->lenght ];
         }
-        ls->lenght++;
+        arr->lenght++;
     }
 }
 
-void pop(list *ls){
-    if(ls->lenght > 1){
-        element *this = ls->object[0].back; //Armazena o endereço do ultimo elemento da lista
+/*Pop() Remove o ultimo objeto e retorna o seu valor*/
+int pop(array *arr){
+    if(arr->lenght > 1){
+        element *object = arr->object[0].back; //Armazena o endereço do ultimo objeto da array
+        int value = arr->object[0].back->value; //Armazena valor do ultimo objeto da array
 
-        ls->object[0].back = ls->object[0].back->back; //Altera o endereço 
-        ls->object[0].back-> = &ls->object[0];
+        arr->object[0].back = arr->object[0].back->back; //Altera o endereço do cabeçalho/rodapé para o penúltimo objeto do array
+        arr->object[0].back->next = &arr->object[0]; //Altera o endereço do penúltimo objeto para o cabeçalho/rodapé do array
 
-        free(this);
-        ls->lenght--;
+        free(object); //Libera a ultima posição
+
+        arr->lenght--; //Decrementa 1 na quantidade
+
+        return value;
+    }else{
+        return NULL;
     }
 }
 
-/*Exibe o Array (lista, pilha, fila e etc)*/
-void echoArray(list *ls, int flow){ // O Parâmetro "Flow" é usado para definir o fuxo da exibiçao 
-    element *pl;
+/*Shift() Remove o ultimo objeto e retorna o seu valor*/
+int shift(array *arr){
+    if(arr->lenght > 1){
+        element *object = arr->object[0].next; //Armazena o endereço do ultimo objeto da array
+        int value = arr->object[0].next->value; //Armazena valor do ultimo objeto da array
+
+        arr->object[0].next = arr->object[0].next->next; //Altera o endereço do cabeçalho/rodapé para o penúltimo objeto do array
+        arr->object[0].next->back = &arr->object[0]; //Altera o endereço do penúltimo objeto para o cabeçalho/rodapé do array
+
+        free(object); //Libera a ultima posição
+
+        arr->lenght--; //Decrementa 1 na quantidade
+
+        return value;
+    }else{
+        return NULL;
+    }
+}
+
+/*findIndex() Busca no array a posiçao do 1° valor correspondente ao passado no parâmetro*/
+int findIndex(array *arr, int value){
+    if(arr->lenght > 1){
+        int index = 1;
+        element *parr;
+
+        for(parr = arr->object[0].next; parr != &arr->object[0] && index < (arr->lenght - 1); parr = parr->next ){
+            if(value == parr->value){
+                return index; //Retorna a POSIÇÂO (Indice [0] == Posição 1) do valor achado
+            }
+            index++;
+        }
+        return 0; //Se não achar retorna 0
+    }else{
+        return 0; //Se não houver objetos no array retorna 0
+    }
+}
+
+/*find() Busca no array o 1° valor correspondente ao passado no parâmetro*/
+int find(array *arr, int index){
+    if(arr->lenght > 1 && arr->lenght > index ){
+        int i=1;
+        element *parr;
+
+        for(parr = arr->object[0].next; parr != &arr->object[0] && i < index ; parr = parr->next ){
+            i++;
+        }
+        return parr->value; //Retorna valor achado na posiçao
+    }
+    return NULL; //Se não houver objetos no array retorna 0
+}
+
+/*Exibe o Array (array, pilha, fila e etc)*/
+void echoArray(array *arr, int flow){ //O parâmetro "Flow" é usado para definir o fuxo da exibição 
+    element *parr;
     int i=0;
 
     if(!flow){
         /*Exibir os valores partindo do início ao fim - Se o Flow for igual à 0*/
-        for(pl = ls->object[0].next ; pl!= &ls->object[0] && (ls->lenght - 2) >= i; pl = pl->next){
+        for(parr = arr->object[0].next ; parr!= &arr->object[0] && i < (arr->lenght - 1); parr = parr->next){
             i++;
-            printf("Posição - %i | Valor - %i\n",i , pl->value);
+            printf("Posição - %i | Valor - %i\n",i , parr->value);
         }
     }else{
         /*Exibir os valores partindo do fim ao início - Se o Flow for igual à 1*/
-        for(pl = ls->object[0].back ; pl!= &ls->object[0] && (ls->lenght - 2) >= i; pl = pl->back){
+        for(parr = arr->object[0].back; parr!= &arr->object[0] && i < (arr->lenght - 1); parr = parr->back){
             i++;
-            printf("Posição - %i | Valor - %i\n",i , pl->value);
+            printf("Posição - %i | Valor - %i\n",i , parr->value);
         }
     }
 }
 
 int main(){
     int i;
-    list *ls = new_list();
-    for(i=0;i<10;i++){
-        push(ls,i);
+    array *arr = new_array();
+    /* for(i=0;i<10;i++){
+        push(arr,i);
     }
     for(int j=10; j<20;j++){
-        unshift(ls,j);
-    }
-    echoArray(ls,0);
+        unshift(arr,j);
+    } */
+    push(arr,13);
+    push(arr,143);
+    clear();
+    printf("%i\n",arr->lenght);
+    printf("%i\n", find(arr,1) );
+    
+    echoArray(arr,0);
     return 0;
 }
