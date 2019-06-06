@@ -23,7 +23,7 @@ array* new_array(void){
     array *arr = (array *) malloc(sizeof(array));
 
     if(arr == NULL){
-        printf("Memória Cheia");
+        printf("Memoria Cheia");
         return NULL;
     }else{
         /*Definindo o valor padrão de criação*/
@@ -42,7 +42,7 @@ int get_space(array *arr){
     }
 
     if(arr->object == NULL){
-        printf("Memória cheia");
+        printf("Memoria cheia");
         free(arr->object);
         return 0;
     }else{
@@ -55,7 +55,7 @@ void push(array *arr,int value){
         if(arr->lenght == 1){
             arr->object[0].back = &arr->object[1]; //Definindo endereço do objeto anterior no cabeçalho
             arr->object[0].next = &arr->object[1]; //Definindo endereço do objeto seguinte no cabeçalho
-            
+
             arr->object[1].value = value; //Definindo valor do 1° Item
             arr->object[1].next = &arr->object[0]; //Definindo endereço do objeto seguinte
             arr->object[1].back = &arr->object[0]; //Definindo endereço do objeto anterior
@@ -80,7 +80,7 @@ void unshift(array *arr,int value){
         if(arr->lenght == 1){
             arr->object[0].back = &arr->object[1]; //Definindo endereço do objeto anterior no cabeçalho
             arr->object[0].next = &arr->object[1]; //Definindo endereço do objeto seguinte no cabeçalho
-            
+
             arr->object[1].value = value; //Definindo valor do 1° Item
             arr->object[1].next = &arr->object[0]; //Definindo endereço do objeto seguinte
             arr->object[1].back = &arr->object[0]; //Definindo endereço do objeto anterior
@@ -170,40 +170,45 @@ int find(array *arr, int index){
 }
 
 /*Exibe o Array (array, pilha, fila e etc)*/
-void echoArray(array *arr, int flow){ //O parâmetro "Flow" é usado para definir o fuxo da exibição 
-    element *parr;
-    int i=0;
+void echoArray(array *arr, int flow){ //O parâmetro "Flow" é usado para definir o fuxo da exibição
+    if(arr->lenght > 1){
+        element *parr;
+            int i=0;
 
-    if(!flow){
-        /*Exibir os valores partindo do início ao fim - Se o Flow for igual à 0*/
-        for(parr = arr->object[0].next ; parr!= &arr->object[0] && i < (arr->lenght - 1); parr = parr->next){
-            i++;
-            printf("Posição - %i | Valor - %i\n",i , parr->value);
+        if(!flow){
+            /*Exibir os valores partindo do início ao fim - Se o Flow for igual à 0*/
+            for(parr = arr->object[0].next ; parr!= &arr->object[0] && i < (arr->lenght - 1); parr = parr->next){
+                i++;
+                printf("Posicao - %i | Valor - %i\n",i , parr->value);
+            }
+        }else{
+            /*Exibir os valores partindo do fim ao início - Se o Flow for igual à 1*/
+            for(parr = arr->object[0].back; parr!= &arr->object[0] && i < (arr->lenght - 1); parr = parr->back){
+                i++;
+                printf("Posicao - %i | Valor - %i\n",i , parr->value);
+            }
         }
     }else{
-        /*Exibir os valores partindo do fim ao início - Se o Flow for igual à 1*/
-        for(parr = arr->object[0].back; parr!= &arr->object[0] && i < (arr->lenght - 1); parr = parr->back){
-            i++;
-            printf("Posição - %i | Valor - %i\n",i , parr->value);
-        }
+        printf("Array esta vazio.");
     }
 }
 
 int main(){
     int i;
     array *arr = new_array();
-    /* for(i=0;i<10;i++){
-        push(arr,i);
-    }
-    for(int j=10; j<20;j++){
-        unshift(arr,j);
-    } */
-    push(arr,13);
-    push(arr,143);
+
+    //unshift(arr,13); // Inserir no inicio
+    //unshift(arr, 26);
+    //push(arr,143);// Inserir no final
+    //push(arr,245);
+    //shift(arr); // Retirar o 1°
+    //pop(arr); // Retirar o último
+    //find(arr, 2); // Encontra o valor baseado na posição
+    //findIndex(arr,13); // Encontra a posição no qual o valor se encontra
+
+
     clear();
-    printf("%i\n",arr->lenght);
-    printf("%i\n", find(arr,1) );
-    
-    echoArray(arr,0);
+
+    echoArray(arr,0); // Escreve na tela todos os valores contidos no Array
     return 0;
 }
