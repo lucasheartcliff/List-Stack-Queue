@@ -199,14 +199,13 @@ int main(){
 
     //unshift(arr,13); // Inserir no inicio
     //unshift(arr, 26);
-    //push(arr,143);// Inserir no final
+    //push(arr,143); // Inserir no final
     //push(arr,245);
     //shift(arr); // Retirar o 1°
     //pop(arr); // Retirar o último
     //find(arr, 2); // Encontra o valor baseado na posição
     //findIndex(arr,13); // Encontra a posição no qual o valor se encontra
-
-
+    
     clear();
 
     echoArray(arr,0); // Escreve na tela todos os valores contidos no Array
